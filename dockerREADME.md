@@ -1,11 +1,15 @@
 # Prerequisites
 
-- Install docker-desktop (For window users, install wsl when prompted)
+- Install docker-desktop (For window users, install wsl when prompted).
+- docker-desktop needs to be started.
 
 The Docker files live on the `docker` branch. We will use the commands below to pull only the docker and package-json files into your own branch. Nothing else will be affected.
 
 ## Pulling changes from docker branch 
 _Do this often so you have all the latest dependencies_
+
+#### _From the root directory_
+
 1. Fetch the docker branch:
    ```bash
    git fetch origin docker
