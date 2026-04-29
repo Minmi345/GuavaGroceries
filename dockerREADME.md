@@ -1,33 +1,30 @@
-# GuavaGroceries - Docker Setup
-
-## Prerequisites
+# Prerequisites
 
 - Install docker-desktop (For window users, install wsl when prompted)
 
-## Instructions 
-
 The Docker files live on the `docker` branch. We will use the commands below to pull only the docker and package-json files into your own branch. Nothing else will be affected.
 
-### Pull all the latest changes on docker branch (Do this often so you have all the latest dependencies)
+## Pulling changes from docker branch 
+_Do this often so you have all the latest dependencies_
 1. Fetch the docker branch:
    ```bash
    git fetch origin docker
    ```
 
-#### To update Backend
+## To update Backend
 
 1. Pull backend Docker + package files:
    ```bash
    git switch origin/docker -- backend/Dockerfile backend/docker-compose.yml
    git switch origin/docker -- backend/package.json backend/package-lock.json
    ```
-   ```
+   
 2. Build and start (backend):
    ```bash
    cd backend
    docker compose up --build
    ```
-#### To update Frontend
+## To update Frontend
 
 1. Pull frontend Docker + package files:
    ```bash
@@ -40,7 +37,7 @@ The Docker files live on the `docker` branch. We will use the commands below to 
    docker compose up --build
    ```
 
-### Pushing New Dependencies to the docker Branch
+## Pushing New Dependencies to the docker Branch
 
 When you install new packages, push the updated `package.json` and `package-lock.json` to the `docker` branch so everyone can pull them:
 
@@ -53,13 +50,14 @@ When you install new packages, push the updated `package.json` and `package-lock
    ```bash
    # For backend dependencies
    git switch your-branch -- backend/package.json backend/package-lock.json
+   git add backend/package.json backend/package-lock.json
 
    # For frontend dependencies
    git switch your-branch -- frontend/package.json frontend/package-lock.json
+   git add frontend/package.json frontend/package-lock.json
    ```
 4. Commit and push:
    ```bash
-   git add backend/package.json backend/package-lock.json frontend/package.json frontend/package-lock.json
    git commit -m "Update dependencies"
    git push origin docker
    ```
@@ -100,9 +98,9 @@ From the project root:
 docker compose -f backend/docker-compose.yml -f frontend/docker-compose.yml up --build
 ```
 
-==========================================================================================
+***
 
-## Extra information
+## Optional information
 
 ### How `git fetch` Works
 
