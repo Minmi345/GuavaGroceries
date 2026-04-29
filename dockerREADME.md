@@ -26,7 +26,7 @@ _Do this often so you have all the latest dependencies_
 2. Build and start (backend):
    ```bash
    cd backend
-   docker compose up --build
+   docker compose up --build -d
    ```
 ## To update Frontend
 
@@ -38,7 +38,7 @@ _Do this often so you have all the latest dependencies_
 2. Build and start:
    ```bash
    cd frontend
-   docker compose up --build
+   docker compose up --build -d
    ```
 
 ## Pushing New Dependencies to the docker Branch
@@ -80,7 +80,7 @@ Run these two commands to start the backend:
 
 ```bash
 cd backend
-docker compose up --build
+docker compose up -d
 ```
 
 The backend will be available at `http://localhost:3000`.
@@ -89,7 +89,7 @@ The backend will be available at `http://localhost:3000`.
 
 ```
 cd frontend
-docker compose up --build
+docker compose up -d
 ```
 
 The frontend will be available at `http://localhost:5173`.
@@ -99,7 +99,7 @@ The frontend will be available at `http://localhost:5173`.
 From the project root:
 
 ```bash
-docker compose -f backend/docker-compose.yml -f frontend/docker-compose.yml up --build
+docker compose -f backend/docker-compose.yml -f frontend/docker-compose.yml up --build -d
 ```
 
 ***
@@ -119,6 +119,7 @@ docker compose -f backend/docker-compose.yml -f frontend/docker-compose.yml up -
 |---------|-------------|
 | `docker compose up --build` | Build and start (foreground) |
 | `docker compose up -d --build` | Build and start (background, detached mode) |
+| `docker compose up` | Start containers |
 | `docker compose down` | Stop and remove containers |
 | `docker compose logs -f` | Follow logs |
 
