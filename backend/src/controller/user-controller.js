@@ -1,22 +1,17 @@
-import {findUsers} from '../model/user-model.js'
+import { userModel } from '../model/user-model.js'
 export const controller = {}
 
-const users = [
-    { id: 0, name: 'John' },
-    { id: 1, name: 'Bill' },
-    { id: 2, name: 'Sharona' }
-]
+const users = [{}]
 
 controller.getUsers = async (req, res) => {
     try{
-        res.json(findUsers())
+        res.json(userModel.findUsers())
     }
     catch (err) {
         res.status(500).json({
-            error: err.message
+            error: err.stack
         })
     }
-    // res.json(users)
 }
 
 controller.getUserById = async (req, res) => {
@@ -34,31 +29,21 @@ controller.getUserById = async (req, res) => {
         }
     } catch (err) {
         res.status(500).json({
-            error: err.message
+            error: err.stack
         })
     }
 }
 
 controller.addUser = async (req, res) => {
     try {
-        const name = await req.body.name
-
-        const newId = users.length > 0
-          ? Math.max(...users.map(u => u.id)) +1
-          : 1
-        
-        const newUser = {
-            id: newId,
-            name: name
-        }
-
-        users.push(newUser)
+        const user = req.body
+        const userId = await userModel.addUser(user)
         res.status(201).json({
-            newUser
+            userId
         })
     } catch (err) {
         res.status(500).json({
-            error: err.message
+            error: err.stack
         })
     }
 }
