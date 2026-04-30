@@ -1,3 +1,4 @@
+import {findUsers} from '../model/user-model.js'
 export const controller = {}
 
 const users = [
@@ -7,7 +8,15 @@ const users = [
 ]
 
 controller.getUsers = async (req, res) => {
-    res.json(users)
+    try{
+        res.json(findUsers())
+    }
+    catch{
+        res.status(500).json({
+            error: err.message
+        })
+    }
+    // res.json(users)
 }
 
 controller.getUserById = async (req, res) => {

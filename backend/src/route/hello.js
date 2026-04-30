@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/hello', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello to you too!')
 })
 
 
