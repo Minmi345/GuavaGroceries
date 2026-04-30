@@ -2,25 +2,24 @@
 
 - Install docker-desktop (For window users, install wsl when prompted).
 - docker-desktop needs to be started.
+- We will use the commands below to pull only the docker and package-json files into your own branch. Nothing else will be affected.
 
-The Docker files live on the `docker` branch. We will use the commands below to pull only the docker and package-json files into your own branch. Nothing else will be affected.
-
-## Pulling changes from docker branch 
+## Pulling docker changes
 _Do this often so you have all the latest dependencies_
 
 #### _From the root directory_
 
 1. Fetch the docker branch:
    ```bash
-   git fetch origin docker
+   git fetch origin main
    ```
 
-## To update Backend
+## To pull Backend
 
 1. Pull backend Docker + package files:
    ```bash
-   git checkout origin/docker -- backend/Dockerfile backend/docker-compose.yml
-   git checkout origin/docker -- backend/package.json backend/package-lock.json
+   git checkout origin/main -- backend/Dockerfile backend/docker-compose.yml
+   git checkout origin/main -- backend/package.json backend/package-lock.json
    ```
    
 2. Build and start (backend):
@@ -28,12 +27,12 @@ _Do this often so you have all the latest dependencies_
    cd backend
    docker compose up --build -d
    ```
-## To update Frontend
+## To pull Frontend
 
 1. Pull frontend Docker + package files:
    ```bash
-   git checkout origin/docker -- frontend/Dockerfile frontend/docker-compose.yml
-   git checkout origin/docker -- frontend/package.json frontend/package-lock.json
+   git checkout origin/main -- frontend/Dockerfile frontend/docker-compose.yml
+   git checkout origin/main -- frontend/package.json frontend/package-lock.json
    ```
 2. Build and start:
    ```bash
@@ -41,16 +40,16 @@ _Do this often so you have all the latest dependencies_
    docker compose up --build -d
    ```
 
-## Pushing New Dependencies to the docker Branch
+## Pushing New Dependencies
 
-When you install new packages, push the updated `package.json` and `package-lock.json` to the `docker` branch so everyone can pull them:
+When you install new packages, push the updated `package.json` and `package-lock.json` so everyone can pull them:
 
 1. Make sure you're on your working branch and have committed your changes
-2. Switch to the `docker` branch:
+2. Switch to the `main` branch:
    ```bash
-   git switch docker
+   git switch main
    ```
-3. Pull the updated package files from your branch to docker branch (replace `your-branch` with your branch name):
+3. Pull the updated package files from your branch to `main` branch (replace `your-branch` with your branch name):
    ```bash
    # For backend dependencies
    git checkout your-branch -- backend/package.json backend/package-lock.json
@@ -63,7 +62,7 @@ When you install new packages, push the updated `package.json` and `package-lock
 4. Commit and push:
    ```bash
    git commit -m "Update dependencies"
-   git push origin docker
+   git push origin main
    ```
 5. Switch back to your branch:
    ```bash
