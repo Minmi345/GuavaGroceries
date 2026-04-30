@@ -18,11 +18,9 @@ controller.getUsers = async (req, res) => {
 controller.getUserById = async (req, res) => {
     try {
         const id = parseInt(req.params.id)
-        const user = users.find(u => u.id === id)
+        const user = await userModel.findUserById(id)
         if (user) {
-            res.json({
-                name: user.name
-            })
+            res.json(user)
         } else {
             res.status(404).json({
                 error: 'No such user found'
@@ -49,6 +47,8 @@ controller.addUser = async (req, res) => {
     }
 }
 
+
+//todo: fix the rest :D
 controller.updateUser = async (req, res) => {
     try {
         const userId = parseInt(req.params.id)
