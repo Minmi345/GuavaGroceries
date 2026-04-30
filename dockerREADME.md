@@ -2,14 +2,14 @@
 
 - Install docker-desktop (For window users, install wsl when prompted).
 - docker-desktop needs to be started.
-- We will use the commands below to pull only the docker and package-json files into your own branch. Nothing else will be affected.
+- We will use the commands below to pull only these four files: `Dockerfile, docker-compose.ymal, package-json, and package-lock.json` into your own branch. Nothing else will be affected.
 
 ## Pulling docker changes
 _Do this often so you have all the latest dependencies_
 
 #### _From the root directory_
 
-1. Fetch the docker branch:
+1. Fetch the main branch:
    ```bash
    git fetch origin main
    ```
@@ -18,8 +18,7 @@ _Do this often so you have all the latest dependencies_
 
 1. Pull backend Docker + package files:
    ```bash
-   git checkout origin/main -- backend/Dockerfile backend/docker-compose.yml
-   git checkout origin/main -- backend/package.json backend/package-lock.json
+   git checkout origin/main -- backend/Dockerfile backend/docker-compose.yml backend/package.json backend/package-lock.json
    ```
    
 2. Build and start (backend):
@@ -31,8 +30,7 @@ _Do this often so you have all the latest dependencies_
 
 1. Pull frontend Docker + package files:
    ```bash
-   git checkout origin/main -- frontend/Dockerfile frontend/docker-compose.yml
-   git checkout origin/main -- frontend/package.json frontend/package-lock.json
+   git checkout origin/main -- frontend/Dockerfile frontend/docker-compose.yml frontend/package.json frontend/package-lock.json
    ```
 2. Build and start:
    ```bash
@@ -52,11 +50,11 @@ When you install new packages, push the updated `package.json` and `package-lock
 3. Pull the updated package files from your branch to `main` branch (replace `your-branch` with your branch name):
    ```bash
    # For backend dependencies
-   git checkout your-branch -- backend/package.json backend/package-lock.json
+   git checkout your-branch -- backend/Dockerfile backend/docker-compose.yml backend/package.json backend/package-lock.json
    git add backend/package.json backend/package-lock.json
 
    # For frontend dependencies
-   git checkout your-branch -- frontend/package.json frontend/package-lock.json
+   git checkout your-branch -- frontend/Dockerfile frontend/docker-compose.yml frontend/package.json frontend/package-lock.json
    git add frontend/package.json frontend/package-lock.json
    ```
 4. Commit and push:
@@ -98,7 +96,7 @@ The frontend will be available at `http://localhost:5173`.
 From the project root:
 
 ```bash
-docker compose -f backend/docker-compose.yml -f frontend/docker-compose.yml up --build -d
+docker compose -f backend/docker-compose.yml -f frontend/docker-compose.yml up -d
 ```
 
 ***
