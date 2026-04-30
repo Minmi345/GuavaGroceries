@@ -5,7 +5,8 @@ const users = [{}]
 
 controller.getUsers = async (req, res) => {
     try{
-        res.json(userModel.findUsers())
+        const users = await userModel.findUsers()
+        res.json(users)
     }
     catch (err) {
         res.status(500).json({
