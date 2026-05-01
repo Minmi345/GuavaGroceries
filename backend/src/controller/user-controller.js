@@ -1,6 +1,11 @@
 import { userModel } from '../model/user-model.js'
 export const controller = {}
 
+/**
+ * Retrieves all users.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 controller.getUsers = async (req, res) => {
     try{
         const users = await userModel.findUsers()
@@ -13,9 +18,14 @@ controller.getUsers = async (req, res) => {
     }
 }
 
+/**
+ * Retrieves a single user by ID.
+ * @param {import('express').Request} req - Expects `req.params.id`.
+ * @param {import('express').Response} res
+ */
 controller.getUserById = async (req, res) => {
     try {
-        const id = parseInt(req.params.id)
+        const id = parseInt(req.params.id, 10)
         const user = await userModel.findUserById(id)
         if (user) {
             res.json(user)
@@ -31,6 +41,11 @@ controller.getUserById = async (req, res) => {
     }
 }
 
+/**
+ * Creates a new user.
+ * @param {import('express').Request} req - Expects `req.body` with `name` and `password`.
+ * @param {import('express').Response} res
+ */
 controller.addUser = async (req, res) => {
     try {
         const user = req.body
@@ -45,10 +60,14 @@ controller.addUser = async (req, res) => {
     }
 }
 
-
+/**
+ * Partially or fully updates a user by ID.
+ * @param {import('express').Request} req - Expects `req.params.id` and `req.body` with fields to update.
+ * @param {import('express').Response} res
+ */
 controller.updateUser = async (req, res) => {
     try {
-        const updated = await userModel.updateUser(req.params.id, req.body)
+        const updated = await userModel.updateUser(parseInt(req.params.id, 10), req.body)
         if (updated) {
             res.status(200).json({
                 updated
@@ -65,12 +84,17 @@ controller.updateUser = async (req, res) => {
     }
 }
 
+/**
+ * Deletes a user by ID.
+ * @param {import('express').Request} req - Expects `req.params.id`.
+ * @param {import('express').Response} res
+ */
 controller.deleteUser = async (req, res) => {
     try {
-        const deleted = await userModel.deleteUser(parseInt(req.params.id))
+        const deleted = await userModel.deleteUser(parseInt(req.params.id, 10))
         if (deleted) {
             res.status(200).json({
-                userId: deleted.userId,
+                userId: deleted.id,
                 name: deleted.name
             })
         } else {
