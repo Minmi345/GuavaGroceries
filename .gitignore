@@ -5,6 +5,7 @@ node_modules/
 #environment variables
 **/.env
 backend/.env
+secrets/
 
 # Build outputs
 dist/
