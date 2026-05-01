@@ -9,4 +9,5 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "--env-file=.env", "app"]
+CMD ["npx" ,"nodemon", "app.js"]
+
