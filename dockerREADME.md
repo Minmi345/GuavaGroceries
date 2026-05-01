@@ -3,8 +3,14 @@
 - Install docker-desktop (For window users, install wsl when prompted).
 - docker-desktop needs to be started.
 
-## Pulling 
-_Do this after you pull from main or any other branch. This will make sure docker image gets rebuilt with the updated `package.json`_
+## Rebuild docker image
+Do this after you
+
+_1. install a new npm package_
+
+_2. pull from main or any other branch_
+
+This will make sure docker image gets rebuilt with the updated `package.json`
    
 - Build and start (backend):
    ```bash
