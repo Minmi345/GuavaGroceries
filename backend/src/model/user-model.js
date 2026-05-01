@@ -1,8 +1,10 @@
 import { query as dbQuery } from '../config/db.js';
+/** @module userModel */
 export const userModel = {}
 
 /**
  * Retrieves all users from the database.
+ * @memberof module:userModel
  * @returns {Promise<Array>} Array of all users with id, name, and password.
  */
 userModel.findUsers = async () => {
@@ -12,6 +14,7 @@ userModel.findUsers = async () => {
 
 /**
  * Retrieves a single user by their ID.
+ * @memberof module:userModel
  * @param {number|string} id - The ID of the user to retrieve.
  * @returns {Promise<Object|undefined>} The user object, or undefined if not found.
  */
@@ -24,6 +27,7 @@ userModel.findUserById = async (id) => {
 
 /**
  * Inserts a new user into the database.
+ * @memberof module:userModel
  * @param {Object} user - The user to create.
  * @param {string} user.name - The name of the user.
  * @param {string} user.password - The password of the user.
@@ -39,6 +43,7 @@ userModel.addUser = async (user) => {
 
 /**
  * Partially or fully updates a user's fields.
+ * @memberof module:userModel
  * @param {number|string} id - The ID of the user to update.
  * @param {Object} updates - An object containing the fields to update.
  * @param {string} [updates.name] - The new name of the user.
@@ -58,6 +63,7 @@ userModel.updateUser = async (id, updates) => {
 
 /**
  * Deletes a user by their ID.
+ * @memberof module:userModel
  * @param {number|string} id - The ID of the user to delete.
  * @returns {Promise<Object|undefined>} The deleted user object, or undefined if not found.
  */
