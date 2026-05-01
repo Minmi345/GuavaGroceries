@@ -1,32 +1,34 @@
-import {findUsers} from '../model/user-model.js'
+import { userModel } from '../model/user-model.js'
 export const controller = {}
 
-const users = [
-    { id: 0, name: 'John' },
-    { id: 1, name: 'Bill' },
-    { id: 2, name: 'Sharona' }
-]
-
+/**
+ * Retrieves all users.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 controller.getUsers = async (req, res) => {
     try{
-        res.json(findUsers())
+        const users = await userModel.findUsers()
+        res.json(users)
     }
     catch (err) {
         res.status(500).json({
-            error: err.message
+            error: err.stack
         })
     }
-    // res.json(users)
 }
 
+/**
+ * Retrieves a single user by ID.
+ * @param {import('express').Request} req - Expects `req.params.id`.
+ * @param {import('express').Response} res
+ */
 controller.getUserById = async (req, res) => {
     try {
-        const id = parseInt(req.params.id)
-        const user = users.find(u => u.id === id)
+        const id = parseInt(req.params.id, 10)
+        const user = await userModel.findUserById(id)
         if (user) {
-            res.json({
-                name: user.name
-            })
+            res.json(user)
         } else {
             res.status(404).json({
                 error: 'No such user found'
@@ -34,44 +36,41 @@ controller.getUserById = async (req, res) => {
         }
     } catch (err) {
         res.status(500).json({
-            error: err.message
+            error: err.stack
         })
     }
 }
 
+/**
+ * Creates a new user.
+ * @param {import('express').Request} req - Expects `req.body` with `name` and `password`.
+ * @param {import('express').Response} res
+ */
 controller.addUser = async (req, res) => {
     try {
-        const name = await req.body.name
-
-        const newId = users.length > 0
-          ? Math.max(...users.map(u => u.id)) +1
-          : 1
-        
-        const newUser = {
-            id: newId,
-            name: name
-        }
-
-        users.push(newUser)
+        const user = req.body
+        const userId = await userModel.addUser(user)
         res.status(201).json({
-            newUser
+            userId
         })
     } catch (err) {
         res.status(500).json({
-            error: err.message
+            error: err.stack
         })
     }
 }
 
+/**
+ * Partially or fully updates a user by ID.
+ * @param {import('express').Request} req - Expects `req.params.id` and `req.body` with fields to update.
+ * @param {import('express').Response} res
+ */
 controller.updateUser = async (req, res) => {
     try {
-        const userId = parseInt(req.params.id)
-        const updatedData = await req.body
-        const user = users.find(u => u.id === userId)
-        if (user) {
-            Object.assign(user, updatedData)
-            res.json({
-                user
+        const updated = await userModel.updateUser(parseInt(req.params.id, 10), req.body)
+        if (updated) {
+            res.status(200).json({
+                updated
             })
         } else {
             res.status(404).json({
@@ -80,41 +79,24 @@ controller.updateUser = async (req, res) => {
         }
     } catch (err) {
         res.status(500).json({
-            error: err.message
+            error: err.stack
         })
     }
 }
 
-controller.replaceUser = async (req, res) => {
-    try {
-        const userId = parseInt(req.params.id)
-        const newUserData = await req.body
-        const userIndex = users.findIndex(u => u.id === userId)
-        if (userIndex !== -1) {
-            newUserData.id = userId
-            users[userIndex] = newUserData
-            res.json({
-                newUserData
-            })
-        } else {
-            res.status(404).json({
-                error: 'User not found.'
-            })
-        }
-    } catch (err) {
-        res.status(500).json({
-            error: err.message
-        })
-    }
-}
-
+/**
+ * Deletes a user by ID.
+ * @param {import('express').Request} req - Expects `req.params.id`.
+ * @param {import('express').Response} res
+ */
 controller.deleteUser = async (req, res) => {
     try {
-        const userId = parseInt(req.params.id)
-        const userIndex = users.findIndex(u => u.id === userId)
-        if (userIndex !== -1) {
-            users.splice(userIndex, 1)
-            res.status(204).json()
+        const deleted = await userModel.deleteUser(parseInt(req.params.id, 10))
+        if (deleted) {
+            res.status(200).json({
+                userId: deleted.id,
+                name: deleted.name
+            })
         } else {
             res.status(404).json({
                 error: 'User not found.'
@@ -122,7 +104,7 @@ controller.deleteUser = async (req, res) => {
         }
     } catch (err) {
         res.status(500).json({
-            error: err.message
+            error: err.stack
         })
     }
 }
