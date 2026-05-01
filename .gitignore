@@ -14,3 +14,5 @@ build/
 # IDE / OS logs
 *.log
 .vscode/
+docs/
+**/docs/
