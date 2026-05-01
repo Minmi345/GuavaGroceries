@@ -1,10 +1,13 @@
 import { userModel } from '../model/user-model.js'
+/** @module userController */
 export const controller = {}
 
 /**
  * Retrieves all users.
+ * @memberof module:userController
  * @param {import('express').Request} req
  * @param {import('express').Response} res
+ * @throws {500} If a database or server error occurs.
  */
 controller.getUsers = async (req, res) => {
     try{
@@ -20,8 +23,11 @@ controller.getUsers = async (req, res) => {
 
 /**
  * Retrieves a single user by ID.
+ * @memberof module:userController
  * @param {import('express').Request} req - Expects `req.params.id`.
- * @param {import('express').Response} res
+ * @param {import('express').Response} res - Returns the user json.
+ * @throws {404} If no user with the given ID exists.
+ * @throws {500} If a database or server error occurs.
  */
 controller.getUserById = async (req, res) => {
     try {
@@ -43,8 +49,10 @@ controller.getUserById = async (req, res) => {
 
 /**
  * Creates a new user.
+ * @memberof module:userController
  * @param {import('express').Request} req - Expects `req.body` with `name` and `password`.
- * @param {import('express').Response} res
+ * @param {import('express').Response} res - Return the user json.
+ * @throws {500} If a database or server error occurs.
  */
 controller.addUser = async (req, res) => {
     try {
@@ -62,8 +70,11 @@ controller.addUser = async (req, res) => {
 
 /**
  * Partially or fully updates a user by ID.
+ * @memberof module:userController
  * @param {import('express').Request} req - Expects `req.params.id` and `req.body` with fields to update.
- * @param {import('express').Response} res
+ * @param {import('express').Response} res - Return the updated user.
+ * @throws {404} If no user with the given ID exists.
+ * @throws {500} If a database or server error occurs.
  */
 controller.updateUser = async (req, res) => {
     try {
@@ -86,8 +97,11 @@ controller.updateUser = async (req, res) => {
 
 /**
  * Deletes a user by ID.
+ * @memberof module:userController
  * @param {import('express').Request} req - Expects `req.params.id`.
- * @param {import('express').Response} res
+ * @param {import('express').Response} res - Returns the deleted users id and name.
+ * @throws {404} If no user with the given ID exists.
+ * @throws {500} If a database or server error occurs.
  */
 controller.deleteUser = async (req, res) => {
     try {
