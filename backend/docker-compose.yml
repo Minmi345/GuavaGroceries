@@ -8,4 +8,5 @@ services:
       - .env
     volumes:
       - ./src:/app/src
+      - ./secrets:/app/secrets
     restart: unless-stopped
