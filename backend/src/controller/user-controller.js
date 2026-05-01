@@ -1,8 +1,6 @@
 import { userModel } from '../model/user-model.js'
 export const controller = {}
 
-const users = [{}]
-
 controller.getUsers = async (req, res) => {
     try{
         const users = await userModel.findUsers()
@@ -48,16 +46,12 @@ controller.addUser = async (req, res) => {
 }
 
 
-//todo: fix the rest :D
 controller.updateUser = async (req, res) => {
     try {
-        const userId = parseInt(req.params.id)
-        const updatedData = await req.body
-        const user = users.find(u => u.id === userId)
-        if (user) {
-            Object.assign(user, updatedData)
-            res.json({
-                user
+        const updated = await userModel.updateUser(req.params.id, req.body)
+        if (updated) {
+            res.status(200).json({
+                updated
             })
         } else {
             res.status(404).json({
@@ -66,41 +60,19 @@ controller.updateUser = async (req, res) => {
         }
     } catch (err) {
         res.status(500).json({
-            error: err.message
-        })
-    }
-}
-
-controller.replaceUser = async (req, res) => {
-    try {
-        const userId = parseInt(req.params.id)
-        const newUserData = await req.body
-        const userIndex = users.findIndex(u => u.id === userId)
-        if (userIndex !== -1) {
-            newUserData.id = userId
-            users[userIndex] = newUserData
-            res.json({
-                newUserData
-            })
-        } else {
-            res.status(404).json({
-                error: 'User not found.'
-            })
-        }
-    } catch (err) {
-        res.status(500).json({
-            error: err.message
+            error: err.stack
         })
     }
 }
 
 controller.deleteUser = async (req, res) => {
     try {
-        const userId = parseInt(req.params.id)
-        const userIndex = users.findIndex(u => u.id === userId)
-        if (userIndex !== -1) {
-            users.splice(userIndex, 1)
-            res.status(204).json()
+        const deleted = await userModel.deleteUser(parseInt(req.params.id))
+        if (deleted) {
+            res.status(200).json({
+                userId: deleted.userId,
+                name: deleted.name
+            })
         } else {
             res.status(404).json({
                 error: 'User not found.'
@@ -108,7 +80,7 @@ controller.deleteUser = async (req, res) => {
         }
     } catch (err) {
         res.status(500).json({
-            error: err.message
+            error: err.stack
         })
     }
 }

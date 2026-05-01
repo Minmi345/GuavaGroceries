@@ -9,8 +9,7 @@ userModel.findUsers = async () => {
 userModel.findUserById = async (id) => {
   const userId = parseInt(id)
   const query = 'SELECT name, password FROM users WHERE id=$1'
-  const values = [userId]
-  const res = await dbQuery(query, values)
+  const res = await dbQuery(query, [userId])
   return res.rows[0]
 }
 
@@ -22,4 +21,20 @@ userModel.addUser = async (user) => {
   return res.rows[0].id
 }
 
-//todo: make update, replace and delete :D
+userModel.updateUser = async (id, updates) => {
+  const fields = Object.keys(updates)
+  const values = Object.values(updates)
+
+  const setClause = fields.map((field, i) => `${field} = $${i + 1}`).join(', ')
+  const query = `UPDATE users SET ${setClause} WHERE  id = $${fields.length + 1} RETURNING *`
+
+  const res = await dbQuery(query, [...values, id])
+  return res.rows[0]
+}
+
+userModel.deleteUser = async (id) => {
+  const userId = parseInt(id)
+  const query = 'DELETE FROM users WHERE id = $1 RETURNING *'
+  const res = await dbQuery(query, [userId])
+  return res.rows[0]
+}
