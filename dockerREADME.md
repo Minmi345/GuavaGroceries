@@ -15,12 +15,12 @@ This will make sure docker image gets rebuilt with the updated `package.json`
 - Build and start (backend):
    ```bash
    cd backend
-   docker compose up --build -d
+   docker compose up --name backend --build -d
    ```
 - Build and start (frontend):
    ```bash
    cd frontend
-   docker compose up --build -d
+   docker compose up --name frontend --build -d
    ```
 
 ## Quick Start
@@ -31,7 +31,7 @@ Run these two commands to start the backend container:
 
 ```bash
 cd backend
-docker compose up -d
+docker compose up --name backend -d
 ```
 
 The backend will be available at `http://localhost:3000`.
@@ -40,7 +40,7 @@ The backend will be available at `http://localhost:3000`.
 Run these two commands to start the frontend container:
 ```
 cd frontend
-docker compose up -d
+docker compose up --name frontend -d
 ```
 
 The frontend will be available at `http://localhost:5173`.
@@ -57,11 +57,11 @@ docker compose -f backend/docker-compose.yml -f frontend/docker-compose.yml up -
 Usually we do, `npm <something>`. We just need to prefix npm commands with docker compose <container_name> with `docker compose exec` to run the same commands inside docker container. Backend container is called `backend` and frontend container is called `frontend`.
 For example, to run frontend npm command:
 ```
-docker compose frontend npm run dev
+docker compose frontend exec npm run dev
 ```
 For backend npm command:
 ```
-docker compose backend npm run dev
+docker compose backend exec npm run dev
 ```
 _That's all folks!_
 
