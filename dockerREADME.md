@@ -15,12 +15,12 @@ This will make sure docker image gets rebuilt with the updated `package.json`
 - Build and start (backend):
    ```bash
    cd backend
-   docker compose up --name backend --build -d
+   docker compose up --build -d
    ```
 - Build and start (frontend):
    ```bash
    cd frontend
-   docker compose up --name frontend --build -d
+   docker compose up --build -d
    ```
 
 ## Quick Start
@@ -31,7 +31,7 @@ Run these two commands to start the backend container:
 
 ```bash
 cd backend
-docker compose up --name backend -d
+docker compose up -d
 ```
 
 The backend will be available at `http://localhost:3000`.
@@ -40,7 +40,7 @@ The backend will be available at `http://localhost:3000`.
 Run these two commands to start the frontend container:
 ```
 cd frontend
-docker compose up --name frontend -d
+docker compose up -d
 ```
 
 The frontend will be available at `http://localhost:5173`.
