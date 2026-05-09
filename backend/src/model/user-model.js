@@ -1,4 +1,4 @@
-import { query as dbQuery } from '../config/db.js';
+import { query as dbQuery } from '../config/db.js'
 /** @module userModel */
 export const userModel = {}
 
@@ -8,8 +8,8 @@ export const userModel = {}
  * @returns {Promise<Array>} Array of all users with id, name, and password.
  */
 userModel.findUsers = async () => {
-  const res = await dbQuery('SELECT id, name, password FROM users ORDER BY id');
-  return res.rows;
+  const res = await dbQuery('SELECT id, name, password FROM users ORDER BY id')
+  return res.rows
 }
 
 /**

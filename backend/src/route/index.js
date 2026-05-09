@@ -5,3 +5,4 @@ import { router as ocrRoute } from './ocrRoute.js'
 export const router = express.Router()
 router.use('/', express.json(), helloRoute)
 router.use('/receipts', ocrRoute)
+router.use('/users', userRoute)
