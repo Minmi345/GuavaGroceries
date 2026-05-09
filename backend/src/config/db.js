@@ -12,16 +12,23 @@ const pool = new Pool({
   idleTimeoutMillis: 30000,       // close idle clients after 30s
   connectionTimeoutMillis: 2000,  // fail if connection takes >2s
 })
-
 // Catch unexpected errors on idle clients to prevent silent failures
 pool.on('error', (err) => {
   console.error('Unexpected idle client error', err)
   process.exit(-1)
 })
 
+pool.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('❌ Database connection error:', err.stack)
+  } else {
+    console.log('✅ Database is connected! Server time:', res.rows[0].now)
+  }
+})
+
 /** Execute a single query using a pooled connection. */
-export const query = (text, params) => pool.query(text, params);
+export const query = (text, params) => pool.query(text, params)
 
 
 /** Retrieve a dedicated client from the pool (remember to release it). */
-export const getClient = () => pool.connect();
+export const getClient = () => pool.connect()
