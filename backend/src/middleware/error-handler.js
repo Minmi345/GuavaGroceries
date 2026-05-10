@@ -23,7 +23,7 @@ errorHandler.notFoundDefault = (req, res, next) => {
  * @param {object} res Express response object.
  * @param {function} next Express next function.
  */
-errorHandler.errorDefault = (err, req, res, next) => {
+errorHandler.errorDefault = (err, req, res) => {
   if (process.env.NODE_ENV !== 'test') {
     console.error(err.stack)
   }
