@@ -13,4 +13,6 @@ router.post('/', userController.addUser)
 
 router.patch('/:id', verificate.id, userController.updateUser)
 
+router.patch('/newRole/:id', verificate.id, userController.updateRole)
+
 router.delete('/:id', verificate.id, userController.deleteUser)
