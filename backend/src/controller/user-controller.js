@@ -10,7 +10,7 @@ export const controller = {}
  * @throws {500} If a database or server error occurs.
  */
 controller.getUsers = async (req, res) => {
-  try{
+  try {
     const users = await userModel.findUsers()
     res.json(users)
   }
@@ -56,7 +56,7 @@ controller.getUserById = async (req, res) => {
  */
 controller.addUser = async (req, res) => {
   try {
-    const {name, password} = req.body
+    const { name, password } = req.body
     const userId = await userModel.addUser(name, password)
     res.status(201).json({
       userId
@@ -79,16 +79,46 @@ controller.addUser = async (req, res) => {
 controller.updateUser = async (req, res) => {
   try {
     const updated = await userModel.updateUser(parseInt(req.params.id, 10), req.body)
-    if (updated) {
+    if (updated)
       res.status(200).json({
         updated
       })
-    } else {
+    else
       res.status(404).json({
         error: 'User not found.'
       })
-    }
+
   } catch (err) {
+    res.status(500).json({
+      error: err.stack
+    })
+  }
+}
+
+/**
+ * Updates the role of a specific user by ID.
+ * @memberof module:userController
+ * @param {import('express').Request} req - Expects `req.params.id` and `req.body.role`.
+ * @param {import('express').Response} res - Returns the updated user object and success message.
+ * @throws {404} If no user with the given ID exists.
+ * @throws {500} If a database or server error occurs.
+ */
+controller.updateRole = async (req, res) => {
+  try {
+    const id = req.params.id
+    const role = req.body.role
+    const updated = await userModel.updateRole(id, role)
+    if (updated)
+      res.status(200).json({
+        message: "User role was updated succesfully",
+        updated
+      })
+    else
+      res.status(404).json({
+        error: 'User not found.'
+      })
+  }
+  catch (err) {
     res.status(500).json({
       error: err.stack
     })

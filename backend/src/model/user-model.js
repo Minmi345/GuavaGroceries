@@ -63,6 +63,20 @@ userModel.updateUser = async (id, updates) => {
 }
 
 /**
+ * Updates the role for a specific user in the database.
+ * @memberof module:userModel
+ * @param {number|string} id - The ID of the user to update.
+ * @param {string} role - The new role to assign to the user.
+ * @returns {Promise<Object|undefined>} An object containing the updated (id, role), or undefined if no user was found.
+ */
+userModel.updateRole = async (id, role) => {
+  const query = 'UPDATE users SET "role" = $1 WHERE id = $2 RETURNING (id, role)'
+  const values = [role, id]
+  const res = await dbQuery(query,values)
+  return res.rows[0]
+}
+
+/**
  * Deletes a user by their ID.
  * @memberof module:userModel
  * @param {number|string} id - The ID of the user to delete.
