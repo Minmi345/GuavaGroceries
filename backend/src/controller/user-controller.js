@@ -56,8 +56,8 @@ controller.getUserById = async (req, res) => {
  */
 controller.addUser = async (req, res) => {
   try {
-    const user = req.body
-    const userId = await userModel.addUser(user)
+    const {name, password} = req.body
+    const userId = await userModel.addUser(name, password)
     res.status(201).json({
       userId
     })

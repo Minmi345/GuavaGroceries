@@ -8,7 +8,7 @@ export const userModel = {}
  * @returns {Promise<Array>} Array of all users with id, name, and password.
  */
 userModel.findUsers = async () => {
-  const res = await dbQuery('SELECT id, name, password FROM users ORDER BY id')
+  const res = await dbQuery('SELECT id, name, password, role FROM users ORDER BY id')
   return res.rows
 }
 
@@ -33,9 +33,10 @@ userModel.findUserById = async (id) => {
  * @param {string} user.password - The password of the user.
  * @returns {Promise<number>} The ID of the newly created user.
  */
-userModel.addUser = async (user) => {
-  const { name, password } = user
-  const query = 'INSERT INTO users (name, password) VALUES ($1, $2) RETURNING id'
+
+//Include name with a space?
+userModel.addUser = async (name, password) => {
+  const query = 'INSERT INTO users (name, password,role) VALUES ($1, $2, \'user\') RETURNING id'
   const values = [name, password]
   const res = await dbQuery(query, values)
   return res.rows[0].id
