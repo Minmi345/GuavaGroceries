@@ -8,3 +8,6 @@ services:
       - ./src:/app/src
       - ./public:/app/public
     restart: unless-stopped
+    env_file:
+      - .env
+      
