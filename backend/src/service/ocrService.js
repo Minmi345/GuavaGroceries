@@ -7,7 +7,7 @@ const client = new vision.ImageAnnotatorClient({
 /**
  * TODO(developer): Uncomment the following line before running the sample.
  */
-export const processImage = async (filepath = 'src/receipts/receipt.png') => {
+export const imageToText = async (filepath = 'src/receipts/receipt.png') => {
 
   // Performs text detection on the local file
   const [result] = await client.textDetection(filepath);

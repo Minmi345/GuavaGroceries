@@ -1,6 +1,6 @@
 const ocrService = require("../service/ocrService")
 
-const uploadImage = async (req, res) => {
+const imageToText = async (req, res) => {
   try {
     const labels = await ocrService.processImage(req.file.path)
     res.json({ labels })
@@ -9,4 +9,4 @@ const uploadImage = async (req, res) => {
   }
 }
 
-module.exports = { uploadImage }
+module.exports = { imageToText }
