@@ -57,11 +57,11 @@ docker compose -f backend/docker-compose.yml -f frontend/docker-compose.yml up -
 Usually we do, `npm <something>`. We just need to prefix npm commands with docker compose <container_name> with `docker compose exec` to run the same commands inside docker container. Backend container is called `backend` and frontend container is called `frontend`.
 For example, to run frontend npm command:
 ```
-docker compose frontend npm run dev
+docker compose frontend exec npm run dev
 ```
 For backend npm command:
 ```
-docker compose backend npm run dev
+docker compose backend exec npm run dev
 ```
 _That's all folks!_
 
