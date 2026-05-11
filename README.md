@@ -68,14 +68,14 @@ The app will be available at http://localhost:5173.
 
 ### Pages and their purpose
 
-HomePage - Landing page with login and register options.
-LoginPage - Login with phone number and password.
-RegisterPage - Create a new account (directed to LoginPage after).
-DashboardPage - Main hub after logging in.
-AccountPage - Shows account details and log out option.
-GroupPage - View group members and split receipts.
-StatisticsPage - Monthly spending and budget chart.
-UploadPage - Upload an image to be parsed.
+- HomePage: Landing page with login and register options.
+- LoginPage: Login with phone number and password.
+- RegisterPage: Create a new account (directed to LoginPage after).
+- DashboardPage: Main hub after logging in.
+- AccountPage: Shows account details and log out option.
+- GroupPage: View group members and split receipts.
+- StatisticsPage: Monthly spending and budget chart.
+- UploadPage: Upload an image to be parsed.
 
 ### Frontend naming conventions
 
