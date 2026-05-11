@@ -5,7 +5,7 @@ import multer from 'multer'
 export const router = express.Router()
 
 const upload = multer({ storage: multer.memoryStorage() })
-router.post('/upload', upload.single('image'), async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).send("No file attached")
     const imageBuffer = req.file.buffer
