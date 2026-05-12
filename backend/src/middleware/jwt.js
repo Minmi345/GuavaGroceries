@@ -26,7 +26,25 @@ export const jwtTokenIsValid = (req, res, next) => {
   }
 }
 
-export const jwtTokenRole = (req,res,next) => {
+/**
+ * A higher-order middleware factory that restricts route access to a specific user role.
+ * * @param {string} requiredRole - The name of the role required to access the route (e.g., 'admin', 'boba').
+ * @returns {Function} An Express middleware function that checks the role in res.locals.jwt.
+ * * @example
+ * router.get('/admin', jwtTokenIsValid, jwtTokenRole('admin'), adminController);
+ */
+export const jwtTokenRole = (requiredRole) => {
+  return (req, res, next) => {
+    const user = res.locals.jwt
+
+    if (!user || user.role !== requiredRole) {
+      return res.status(403).json({ 
+        error: `Forbidden: This action requires ${requiredRole} privileges.` 
+      })
+    }
+
+    next()
+  }
 
 }
 
