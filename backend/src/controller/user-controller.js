@@ -1,5 +1,6 @@
 import { userModel } from '../model/user-model.js'
 /** @module userController */
+import bcrypt from "bcryptjs"
 export const controller = {}
 
 /**
@@ -57,7 +58,9 @@ controller.getUserById = async (req, res) => {
 controller.addUser = async (req, res) => {
   try {
     const { name, password } = req.body
-    const userId = await userModel.addUser(name, password)
+    const salt = bcrypt.genSaltSync(10)
+    const hashed_password = bcrypt.hashSync(password,salt)
+    const userId = await userModel.addUser(name, hashed_password)
     res.status(201).json({
       userId
     })

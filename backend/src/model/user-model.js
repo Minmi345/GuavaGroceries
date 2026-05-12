@@ -26,6 +26,19 @@ userModel.findUserById = async (id) => {
 }
 
 /**
+ * Retrieves a single user by their name.
+ * @memberof module:userModel
+ * @param {string} name - The name of the user to retrieve.
+ * @returns {Promise<Object|undefined>} The user object, or undefined if not found.
+ */
+userModel.findUserByName = async (name) => {
+  const query = 'SELECT * FROM users WHERE name=$1'
+  console.log(name)
+  const res = await dbQuery(query,[name])
+  return res.rows[0]
+}
+
+/**
  * Inserts a new user into the database.
  * @memberof module:userModel
  * @param {Object} user - The user to create.
@@ -87,4 +100,11 @@ userModel.deleteUser = async (id) => {
   const query = 'DELETE FROM users WHERE id = $1 RETURNING *'
   const res = await dbQuery(query, [userId])
   return res.rows[0]
+}
+
+userModel.login = async (name, password) => {
+  const query = 'SELECT * FROM users WHERE name=$1, password=$2'
+  const values = [name,password]
+  const res = await dbQuery(query,values)
+  return res.rows[0]?true:false //if someone is found with such password and name, returns true 
 }
