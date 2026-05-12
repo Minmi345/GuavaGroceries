@@ -26,8 +26,8 @@ router.get('/api/message', jwtTokenIsValid, (req,res) =>{
   res.json({message:"Hello from backend :)"})
 })
 
-router.get('/api/secretmessage', jwtTokenRole, (req,res) =>{
-  res.json({message:"Hello from backend :)"})
+router.get('/api/bobamessage', jwtTokenIsValid, jwtTokenRole('boba'), (req,res) =>{
+  res.json({message:"Hello to BOBA from backend :)"})
 })
 
 router.get('/500', (req, res, next) => {
