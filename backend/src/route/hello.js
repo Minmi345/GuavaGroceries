@@ -1,6 +1,8 @@
 //test routes to know that it is working
 import express from 'express'
 import http from 'http'
+import { jwtTokenIsValid, jwtTokenRole } from '../middleware/jwt.js'
+
 export const router = express.Router()
 
 router.get('/', (req, res) => {
@@ -20,7 +22,11 @@ router.get('/api/hello', (req, res) => {
   res.json(json)
 })
 
-router.get('/api/message', (req,res) =>{
+router.get('/api/message', jwtTokenIsValid, (req,res) =>{
+  res.json({message:"Hello from backend :)"})
+})
+
+router.get('/api/secretmessage', jwtTokenRole, (req,res) =>{
   res.json({message:"Hello from backend :)"})
 })
 

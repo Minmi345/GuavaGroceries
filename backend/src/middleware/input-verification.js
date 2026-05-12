@@ -18,3 +18,7 @@ verificate.name = (req, res, next) => {
   const name = String(req.body)
   
 }
+
+verificate.password = (req, res, next) => {
+
+}
