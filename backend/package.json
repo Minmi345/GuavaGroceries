@@ -17,14 +17,15 @@
   "type": "module",
   "dependencies": {
     "@google-cloud/vision": "^5.3.5",
-    "google-auth-library": "^10.6.2",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "google-auth-library": "^10.6.2",
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.10.1",
-    "multer": "^2.1.1"
+    "multer": "^2.1.1",
+    "pg": "^8.20.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
