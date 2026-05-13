@@ -25,8 +25,7 @@ receiptModel.getAllReceipts = async () => {
 receiptModel.findReceiptsByUserId = async (userId) => {
   const user_id = parseInt(userId, 10)
   //this will give us all the receipt ids of a specific userId
-  const query = `SELECT * FROM ${receiptModel.receiptTableName} WHERE id=$1 \  
-`
+  const query = `SELECT * FROM ${receiptModel.receiptTableName} WHERE user_id = $1`
   const res = await dbQuery(query, [user_id])
   return res.rows
 }
@@ -39,12 +38,18 @@ receiptModel.findReceiptsByUserId = async (userId) => {
  */
 
 receiptModel.findReceiptDetailsByReceiptId = async (receiptId) => {
-  const receipt_id = parseInt(receiptId)
-  const query = `SELECT * FROM ${receiptModel.receiptTableName} WHERE id=$1`
-  const res = await dbQuery(query, [receipt_id])
+  console.log(receiptId)
+  const query = `SELECT * FROM ${receiptModel.productTableName} WHERE receipt_id = $1`
+  const res = await dbQuery(query, [receiptId])
   return res.rows
 }
 
+receiptModel.findProductDetailsByProductId = async (productId) => {
+  const query = `SELECT * FROM ${receiptModel.productTableName} WHERE id = $1`
+  const res = await dbQuery(query, [productId])
+  console.log(res)
+  return res.rows
+}
 /**
  * Inserts a new receipt into the receipts table.
  * @memberof module:receiptModel
@@ -54,19 +59,22 @@ receiptModel.findReceiptDetailsByReceiptId = async (receiptId) => {
 
 receiptModel.addReceipt = async (valueObject) => {
   const insertReceipt = async (randomId, valueObject) => {
+    console.log(randomId, valueObject)
     await dbQuery('BEGIN');
 
     try {
       const insertReceiptQuery = `
             INSERT INTO ${receiptModel.receiptTableName} (id,user_id,total,currency, store_name,date)
-            VALUES (:id, :userId, :storeName,:date)
+            VALUES ($1, $2,$3,$4, $5,$6)
         `;
-      await dbQuery(insertReceiptQuery, {
-        id: randomId,
-        userId: valueObject.userId,
-        storeName: valueObject.storeId,
-        date: valueObject.date
-      });
+      await dbQuery(insertReceiptQuery, [
+        randomId,
+        valueObject.userId,
+        valueObject.total,
+        valueObject.currency,
+        valueObject.storeName,
+        valueObject.date
+      ]);
 
       /**const items = [
         { name: "banana", price:1.5, quantity: 2 },
@@ -76,23 +84,23 @@ receiptModel.addReceipt = async (valueObject) => {
       **/
       const items = valueObject.items
       for (const item of items) {
-        await dbQuery(
+        const result = await dbQuery(
           `INSERT INTO ${receiptModel.productTableName} ( receipt_id, name, price, quantity)
-                 VALUES (:receipt_id, :name, :price, :quantity)`,
-          { randomId, ...item }
+                 VALUES ($1, $2, $3,$4) RETURNING receipt_id`,
+          [randomId, item.name, item.price, item.quantity]
         );
+        if (result.rowCount !== 1) throw new Error('Receipt insert failed');
       }
 
       await dbQuery('COMMIT');
-      return res.rows[0].id
     } catch (err) {
       await dbQuery('ROLLBACK');
       throw err;
     }
   }
   const randomId = uuidv4()
-  const res = await insertReceipt(randomId, valueObject)
-  return res.rows
+  await insertReceipt(randomId, valueObject)
+  return randomId
 }
 /**
  * Deletes a receipt by their ID. On cascade will delete all the products associated with that receipt
@@ -100,11 +108,10 @@ receiptModel.addReceipt = async (valueObject) => {
  * @param {number|string} id - The ID of the receipt to delete.
  * @returns {Promise<Object|undefined>} The deleted receipt object, or undefined if not found.
  */
-userModel.deleteReceipt = async (receiptId) => {
-  const receipt_id = parseInt(receiptId, 10)
+receiptModel.deleteReceipt = async (receiptId) => {
   const query = `DELETE FROM ${receiptModel.receiptTableName} WHERE id = $1 RETURNING *`
-  const res = await dbQuery(query, [receipt_id])
-  return res.rows[0]
+  const res = await dbQuery(query, [receiptId])
+  return res.rowCount < 0
 }
 
 /**
@@ -113,11 +120,16 @@ userModel.deleteReceipt = async (receiptId) => {
  * @param {number|string} id - The ID of the product to delete.
  * @returns {Promise<Object|undefined>} The deleted receipt object, or undefined if not found.
  */
-userModel.deleteProduct = async (productId) => {
-  const product_id = parseInt(productId, 10)
+receiptModel.deleteProduct = async (productId) => {
   const query = `DELETE FROM ${receiptModel.productTableName} WHERE id = $1 RETURNING *`
-  const res = await dbQuery(query, [product_id])
-  return res.rows[0]
+  const res = await dbQuery(query, [productId])
+  return res.rowCount < 0
 }
 
+receiptModel.deleteAllReceiptsOfUser = async (userId) => {
+  const user_id = parseInt(userId, 10)
+  const query = `DELETE FROM ${receiptModel.receiptTableName} WHERE user_id = $1 RETURNING *`
+  const res = await dbQuery(query, [user_id])
+  return res.rowCount < 0
+}
 

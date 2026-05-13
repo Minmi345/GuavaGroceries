@@ -1,6 +1,5 @@
 import { receiptModel } from '../model/receipt-model.js'
 
-
 export const controller = {}
 
 controller.getReceipts = async (req, res) => {
@@ -32,18 +31,61 @@ controller.getReceiptsOfUserId = async (req, res) => {
   }
 }
 
+controller.getProductById = async (req, res) => {
+  try {
+    const product_id = req.params.productId
+    const product = await receiptModel.findProductDetailsByProductId(product_id)
+    if (product) {
+      res.json(product)
+    } else {
+      res.status(404).json({
+        error: 'No receipts found'
+      })
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err.stack
+    })
+  }
+}
+
+controller.getReceiptById = async (req, res) => {
+  try {
+    const receipt_id = req.params.receiptId
+    console.log(req.params)
+    const receipt = await receiptModel.findReceiptDetailsByReceiptId(receipt_id)
+    if (receipt) {
+      res.json(receipt)
+    } else {
+      res.status(404).json({
+        error: 'No receipts found'
+      })
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err.stack
+    })
+  }
+}
+
+
+
 
 controller.addReceipt = async (req, res) => {
   try {
-    const { userId, storeName, date, items } = req.body
-    const receiptId = await receiptModel.addReceipt({
-      userId: userId,
+    const user_id = parseInt(req.params.userId, 10)
+    const { storeName, date, total, currency, items } = req.body
+    const receipt_id = await receiptModel.addReceipt({
+      userId: user_id,
       storeName: storeName,
       date: date,
+      total: total,
+      currency: currency,
       items: items
     })
+    console.log(receipt_id)
     res.status(201).json({
-      receiptId
+      receiptId: receipt_id
     })
   } catch (err) {
     res.status(500).json({
@@ -52,12 +94,34 @@ controller.addReceipt = async (req, res) => {
   }
 }
 
-controller.deleteReceipt = async (req, res) => {
+controller.deleteAllReceiptsOfUserId = async (req, res) => {
   try {
-    const deleted = await receiptModel.deleteReceipt(parseInt(req.params.id, 10))
+    const user_id = parseInt(req.params.userId, 10)
+    const deleted = await receiptModel.deleteAllReceiptsOfUser(user_id)
     if (deleted) {
       res.status(200).json({
-        receiptId: deleted.id,
+        success: deleted,
+      })
+    } else {
+      res.status(404).json({
+        error: 'Receipt not found.'
+      })
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err.stack
+    })
+  }
+}
+
+
+controller.deleteReceipt = async (req, res) => {
+  try {
+    const receipt_id = req.params.receiptId
+    const deleted = await receiptModel.deleteReceipt(receipt_id)
+    if (deleted) {
+      res.status(200).json({
+        success: deleted,
       })
     } else {
       res.status(404).json({
@@ -73,10 +137,11 @@ controller.deleteReceipt = async (req, res) => {
 
 controller.deleteProduct = async (req, res) => {
   try {
-    const deleted = await receiptModel.deleteProduct(parseInt(req.params.id, 10))
+    const product_id = req.params.productId
+    const deleted = await receiptModel.deleteProduct(product_id)
     if (deleted) {
       res.status(200).json({
-        productId: deleted.id,
+        success: deleted,
       })
     } else {
       res.status(404).json({
@@ -89,4 +154,5 @@ controller.deleteProduct = async (req, res) => {
     })
   }
 }
+
 
