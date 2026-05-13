@@ -1,5 +1,6 @@
 import { userModel } from '../model/user-model.js'
 /** @module userController */
+import bcrypt from "bcryptjs"
 export const controller = {}
 
 /**
@@ -10,15 +11,15 @@ export const controller = {}
  * @throws {500} If a database or server error occurs.
  */
 controller.getUsers = async (req, res) => {
-    try{
-        const users = await userModel.findUsers()
-        res.json(users)
-    }
-    catch (err) {
-        res.status(500).json({
-            error: err.stack
-        })
-    }
+  try {
+    const users = await userModel.findUsers()
+    res.json(users)
+  }
+  catch (err) {
+    res.status(500).json({
+      error: err.stack
+    })
+  }
 }
 
 /**
@@ -30,21 +31,21 @@ controller.getUsers = async (req, res) => {
  * @throws {500} If a database or server error occurs.
  */
 controller.getUserById = async (req, res) => {
-    try {
-        const id = parseInt(req.params.id, 10)
-        const user = await userModel.findUserById(id)
-        if (user) {
-            res.json(user)
-        } else {
-            res.status(404).json({
-                error: 'No such user found'
-            })
-        }
-    } catch (err) {
-        res.status(500).json({
-            error: err.stack
-        })
+  try {
+    const id = parseInt(req.params.id, 10)
+    const user = await userModel.findUserById(id)
+    if (user) {
+      res.json(user)
+    } else {
+      res.status(404).json({
+        error: 'No such user found'
+      })
     }
+  } catch (err) {
+    res.status(500).json({
+      error: err.stack
+    })
+  }
 }
 
 /**
@@ -55,17 +56,19 @@ controller.getUserById = async (req, res) => {
  * @throws {500} If a database or server error occurs.
  */
 controller.addUser = async (req, res) => {
-    try {
-        const user = req.body
-        const userId = await userModel.addUser(user)
-        res.status(201).json({
-            userId
-        })
-    } catch (err) {
-        res.status(500).json({
-            error: err.stack
-        })
-    }
+  try {
+    const { name, password } = req.body
+    const salt = bcrypt.genSaltSync(10)
+    const hashed_password = bcrypt.hashSync(password,salt)
+    const userId = await userModel.addUser(name, hashed_password)
+    res.status(201).json({
+      userId
+    })
+  } catch (err) {
+    res.status(500).json({
+      error: err.stack
+    })
+  }
 }
 
 /**
@@ -77,22 +80,52 @@ controller.addUser = async (req, res) => {
  * @throws {500} If a database or server error occurs.
  */
 controller.updateUser = async (req, res) => {
-    try {
-        const updated = await userModel.updateUser(parseInt(req.params.id, 10), req.body)
-        if (updated) {
-            res.status(200).json({
-                updated
-            })
-        } else {
-            res.status(404).json({
-                error: 'User not found.'
-            })
-        }
-    } catch (err) {
-        res.status(500).json({
-            error: err.stack
-        })
-    }
+  try {
+    const updated = await userModel.updateUser(parseInt(req.params.id, 10), req.body)
+    if (updated)
+      res.status(200).json({
+        updated
+      })
+    else
+      res.status(404).json({
+        error: 'User not found.'
+      })
+
+  } catch (err) {
+    res.status(500).json({
+      error: err.stack
+    })
+  }
+}
+
+/**
+ * Updates the role of a specific user by ID.
+ * @memberof module:userController
+ * @param {import('express').Request} req - Expects `req.params.id` and `req.body.role`.
+ * @param {import('express').Response} res - Returns the updated user object and success message.
+ * @throws {404} If no user with the given ID exists.
+ * @throws {500} If a database or server error occurs.
+ */
+controller.updateRole = async (req, res) => {
+  try {
+    const id = req.params.id
+    const role = req.body.role
+    const updated = await userModel.updateRole(id, role)
+    if (updated)
+      res.status(200).json({
+        message: "User role was updated succesfully",
+        updated
+      })
+    else
+      res.status(404).json({
+        error: 'User not found.'
+      })
+  }
+  catch (err) {
+    res.status(500).json({
+      error: err.stack
+    })
+  }
 }
 
 /**
@@ -104,21 +137,21 @@ controller.updateUser = async (req, res) => {
  * @throws {500} If a database or server error occurs.
  */
 controller.deleteUser = async (req, res) => {
-    try {
-        const deleted = await userModel.deleteUser(parseInt(req.params.id, 10))
-        if (deleted) {
-            res.status(200).json({
-                userId: deleted.id,
-                name: deleted.name
-            })
-        } else {
-            res.status(404).json({
-                error: 'User not found.'
-            })
-        }
-    } catch (err) {
-        res.status(500).json({
-            error: err.stack
-        })
+  try {
+    const deleted = await userModel.deleteUser(parseInt(req.params.id, 10))
+    if (deleted) {
+      res.status(200).json({
+        userId: deleted.id,
+        name: deleted.name
+      })
+    } else {
+      res.status(404).json({
+        error: 'User not found.'
+      })
     }
+  } catch (err) {
+    res.status(500).json({
+      error: err.stack
+    })
+  }
 }

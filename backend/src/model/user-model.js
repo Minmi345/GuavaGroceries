@@ -1,4 +1,4 @@
-import { query as dbQuery } from '../config/db.js';
+import { query as dbQuery } from '../config/db.js'
 /** @module userModel */
 export const userModel = {}
 
@@ -8,8 +8,8 @@ export const userModel = {}
  * @returns {Promise<Array>} Array of all users with id, name, and password.
  */
 userModel.findUsers = async () => {
-  const res = await dbQuery('SELECT id, name, password FROM users ORDER BY id');
-  return res.rows;
+  const res = await dbQuery('SELECT id, name, password, role FROM users ORDER BY id')
+  return res.rows
 }
 
 /**
@@ -26,6 +26,19 @@ userModel.findUserById = async (id) => {
 }
 
 /**
+ * Retrieves a single user by their name.
+ * @memberof module:userModel
+ * @param {string} name - The name of the user to retrieve.
+ * @returns {Promise<Object|undefined>} The user object, or undefined if not found.
+ */
+userModel.findUserByName = async (name) => {
+  const query = 'SELECT * FROM users WHERE name=$1'
+  console.log(name)
+  const res = await dbQuery(query,[name])
+  return res.rows[0]
+}
+
+/**
  * Inserts a new user into the database.
  * @memberof module:userModel
  * @param {Object} user - The user to create.
@@ -33,9 +46,10 @@ userModel.findUserById = async (id) => {
  * @param {string} user.password - The password of the user.
  * @returns {Promise<number>} The ID of the newly created user.
  */
-userModel.addUser = async (user) => {
-  const { name, password } = user
-  const query = 'INSERT INTO users (name, password) VALUES ($1, $2) RETURNING id'
+
+//Include name with a space?
+userModel.addUser = async (name, password) => {
+  const query = 'INSERT INTO users (name, password,role) VALUES ($1, $2, \'user\') RETURNING id'
   const values = [name, password]
   const res = await dbQuery(query, values)
   return res.rows[0].id
@@ -62,6 +76,20 @@ userModel.updateUser = async (id, updates) => {
 }
 
 /**
+ * Updates the role for a specific user in the database.
+ * @memberof module:userModel
+ * @param {number|string} id - The ID of the user to update.
+ * @param {string} role - The new role to assign to the user.
+ * @returns {Promise<Object|undefined>} An object containing the updated (id, role), or undefined if no user was found.
+ */
+userModel.updateRole = async (id, role) => {
+  const query = 'UPDATE users SET "role" = $1 WHERE id = $2 RETURNING (id, role)'
+  const values = [role, id]
+  const res = await dbQuery(query,values)
+  return res.rows[0]
+}
+
+/**
  * Deletes a user by their ID.
  * @memberof module:userModel
  * @param {number|string} id - The ID of the user to delete.
@@ -72,4 +100,11 @@ userModel.deleteUser = async (id) => {
   const query = 'DELETE FROM users WHERE id = $1 RETURNING *'
   const res = await dbQuery(query, [userId])
   return res.rows[0]
+}
+
+userModel.login = async (name, password) => {
+  const query = 'SELECT * FROM users WHERE name=$1, password=$2'
+  const values = [name,password]
+  const res = await dbQuery(query,values)
+  return res.rows[0]?true:false //if someone is found with such password and name, returns true 
 }

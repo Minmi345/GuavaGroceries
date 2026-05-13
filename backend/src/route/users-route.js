@@ -1,15 +1,18 @@
 //User routes
 import express from 'express'
+import { verificate } from '../middleware/input-verification.js'
 import { controller as userController } from '../controller/user-controller.js'
 
 export const router = express.Router()
 
-router.get('/users', userController.getUsers)
+router.get('/', userController.getUsers)
 
-router.get('/users/:id', userController.getUserById)
+router.get('/:id', verificate.id, userController.getUserById)
 
-router.post('/users', userController.addUser)
+router.post('/', userController.addUser)
 
-router.patch('/users/:id', userController.updateUser)
+router.patch('/:id', verificate.id, userController.updateUser)
 
-router.delete('/users/:id', userController.deleteUser)
+router.patch('/newRole/:id', verificate.id, userController.updateRole)
+
+router.delete('/:id', verificate.id, userController.deleteUser)
