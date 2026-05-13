@@ -2,9 +2,8 @@ import express from 'express'
 import logger from 'morgan'
 import cors from 'cors'
 import { router } from './route/index.js'
-import { errorHandler } from './middleware/errorHandler.js'
+import { errorHandler } from './middleware/error-handler.js'
 export const app = express()
-app.use(express.json());
 
 //from Deema lecture
 app.use(cors())
