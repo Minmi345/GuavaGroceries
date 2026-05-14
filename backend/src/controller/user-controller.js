@@ -59,7 +59,7 @@ controller.addUser = async (req, res) => {
   try {
     const { name, password } = req.body
     const salt = bcrypt.genSaltSync(10)
-    const hashed_password = bcrypt.hashSync(password,salt)
+    const hashed_password = bcrypt.hashSync(password, salt)
     const userId = await userModel.addUser(name, hashed_password)
     res.status(201).json({
       userId

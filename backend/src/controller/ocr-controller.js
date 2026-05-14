@@ -1,4 +1,4 @@
-const ocrService = require("../service/ocrService")
+/**const ocrService = require("../service/ocr-service.js")
 
 const imageToText = async (req, res) => {
   try {
@@ -10,3 +10,4 @@ const imageToText = async (req, res) => {
 }
 
 module.exports = { imageToText }
+**/
