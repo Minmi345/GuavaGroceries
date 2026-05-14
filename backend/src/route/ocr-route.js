@@ -1,4 +1,4 @@
-import { imageToText, parseText } from '../service/ocrService.js'
+import { imageToText, parseText } from '../service/ocr-service.js'
 import 'dotenv/config';
 import express from 'express'
 import multer from 'multer'
