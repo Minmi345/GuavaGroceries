@@ -16,7 +16,7 @@ export const imageToText = async (filepath = 'src/receipts/receipt.png') => {
   //detections.forEach(text => console.log(text));
 
   const text = result.textAnnotations[0]?.description
-  console.log(text)
+  //console.log(text)
   return text
 }
 
@@ -39,7 +39,7 @@ Instructions:
 1. Return ONLY valid JSON.
 2. For line items, extract values into the following shape: ${JSON.stringify(fields)}.
 3. If there is a negative sign "-" before or after the price of an item, skip the item.
-4. Extract the GRAND TOTAL of the entire receipt into a field named "original_total_receipt_amount". 
+4. Extract the GRAND TOTAL of the entire receipt into a field named "total_receipt_amount". 
 5. Rule: The "total_receipt_amount" should be the final amount paid (after tax and discounts). Do not confuse this with subtotals or individual item prices.
 
 Strict Rules for Quantity:
@@ -81,8 +81,34 @@ Text: ${text}
         content = content.slice(0, -3).trim();
       }
     }
-    console.log('Success:', content);
-    return content
+    content = JSON.parse(content)
+    //console.log('Success:', content);
+    /**{
+    
+    "total": 129.90,
+      "currency": "SEK",
+      "storeName": "Clas Ohlson",
+      "date": "2026-10-01",
+      
+      "items": [
+        {
+          "name": "HALKSKYDD KVILL",
+          "price": 129.90,
+          "quantity": 1
+        }
+      ]
+    }
+      **/
+    const isValidDate = (dateStr) => /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+
+    const receiptDetails = {
+      total: content.receipt_metadata.total_receipt_amount,
+      currency: content.receipt_metadata.currency,
+      date: isValidDate
+        (content.receipt_metadata.date) ? date : new Date().toISOString().split('T')[0],
+      items: content.items
+    }
+    return receiptDetails
   } catch (error) {
     console.error('Error:', error);
   }
