@@ -31,6 +31,10 @@ To run eslint (done from frontend or backend folder):
 
 > npm run eslint
 
+To generate jsdocs:
+
+> npm run docs
+
 ## Working with naming convections
 
 For naming files in js, I use kebab-case (f.e. user-password-controller.js)
