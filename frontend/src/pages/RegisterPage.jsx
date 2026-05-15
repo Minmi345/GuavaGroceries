@@ -84,7 +84,7 @@ export default function RegisterPage() {
 
         {/* page title and subtitle */}
         <div>
-           {/* main heading for page */}
+          {/* main heading for page */}
           <h2 className="text-xl md:text-2xl font-bold text-gray-900">
             Create account
           </h2>
