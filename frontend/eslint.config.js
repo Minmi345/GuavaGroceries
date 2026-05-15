@@ -14,14 +14,14 @@ export default defineConfig([
       reactRefresh.configs.vite,
     ],
     languageOptions: {
-      globals:  { ...globals.node, ...globals.mocha },
+      globals: { ...globals.browser, ...globals.node, ...globals.mocha },
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     rules: {
       'no-unused-vars': 'warn',
       'no-console': 'off',
       semi: ['error', 'never'],
-      indent: ['error', 2]
+      indent: ['error', 2],
     },
   },
 ])
