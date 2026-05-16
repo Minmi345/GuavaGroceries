@@ -5,7 +5,7 @@ export const controller = {}
 controller.getReceipts = async (req, res) => {
   try {
     const receipts = await receiptModel.getAllReceipts()
-    res.json(receipts)
+    res.status(200).json(receipts)
   }
   catch (err) {
     res.status(500).json({
@@ -18,7 +18,7 @@ controller.getReceiptsOfUserId = async (req, res) => {
     const user_id = parseInt(req.params.userId, 10)
     const receipts = await receiptModel.findReceiptsByUserId(user_id)
     if (receipts) {
-      res.json(receipts)
+      res.status(200).json(receipts)
     } else {
       res.status(404).json({
         error: 'No receipts found'
@@ -36,10 +36,10 @@ controller.getProductById = async (req, res) => {
     const product_id = req.params.productId
     const product = await receiptModel.findProductDetailsByProductId(product_id)
     if (product) {
-      res.json(product)
+      res.status(200).json(product)
     } else {
       res.status(404).json({
-        error: 'No receipts found'
+        error: 'No product found'
       })
     }
   } catch (err) {
@@ -55,7 +55,7 @@ controller.getReceiptById = async (req, res) => {
     console.log(req.params)
     const receipt = await receiptModel.findReceiptDetailsByReceiptId(receipt_id)
     if (receipt) {
-      res.json(receipt)
+      res.status(200).json(receipt)
     } else {
       res.status(404).json({
         error: 'No receipts found'
@@ -100,7 +100,7 @@ controller.deleteAllReceiptsOfUserId = async (req, res) => {
     const deleted = await receiptModel.deleteAllReceiptsOfUser(user_id)
     if (deleted) {
       res.status(200).json({
-        success: deleted,
+        isDeleted: deleted,
       })
     } else {
       res.status(404).json({
@@ -121,7 +121,7 @@ controller.deleteReceipt = async (req, res) => {
     const deleted = await receiptModel.deleteReceipt(receipt_id)
     if (deleted) {
       res.status(200).json({
-        success: deleted,
+        isDeleted: deleted,
       })
     } else {
       res.status(404).json({
@@ -141,7 +141,7 @@ controller.deleteProduct = async (req, res) => {
     const deleted = await receiptModel.deleteProduct(product_id)
     if (deleted) {
       res.status(200).json({
-        success: deleted,
+        isDeleted: deleted,
       })
     } else {
       res.status(404).json({
