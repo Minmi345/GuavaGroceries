@@ -1,4 +1,4 @@
-import vision from '@google-cloud/vision';
+import vision from '@google-cloud/vision'
 
 // Creates a client
 const client = new vision.ImageAnnotatorClient({
@@ -10,7 +10,7 @@ const client = new vision.ImageAnnotatorClient({
 export const imageToText = async (filepath = 'src/receipts/receipt.png') => {
 
   // Performs text detection on the local file
-  const [result] = await client.textDetection(filepath);
+  const [result] = await client.textDetection(filepath)
   //const detections = result.textAnnotations;
   //console.log('Text:');
   //detections.forEach(text => console.log(text));
@@ -48,7 +48,7 @@ Strict Rules for Quantity:
 3. If no multiplier line exists, default quantity to 1.
 
 Text: ${text}
-`;
+`
   const data = {
     "model": "gemma3:4b",
     "messages": [{ "role": "user", "content": prompt }],
@@ -62,23 +62,23 @@ Text: ${text}
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
-    });
+    })
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    const result = await response.json();
+    const result = await response.json()
     let content = result.choices[0].message.content
-    content = content.trim();
+    content = content.trim()
 
     if (content.startsWith("```")) {
       // Split at the first newline and take everything after it
-      content = content.split("\n").slice(1).join("\n");
+      content = content.split("\n").slice(1).join("\n")
 
       if (content.endsWith("```")) {
         // Remove the last 3 characters and trim
-        content = content.slice(0, -3).trim();
+        content = content.slice(0, -3).trim()
       }
     }
     content = JSON.parse(content)
@@ -99,18 +99,18 @@ Text: ${text}
       ]
     }
       **/
-    const isValidDate = (dateStr) => /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+    const isValidDate = (dateStr) => /^\d{4}-\d{2}-\d{2}$/.test(dateStr)
 
     const receiptDetails = {
       total: content.receipt_metadata.total_receipt_amount,
       currency: content.receipt_metadata.currency,
       date: isValidDate
-        (content.receipt_metadata.date) ? date : new Date().toISOString().split('T')[0],
+      (content.receipt_metadata.date) ? date : new Date().toISOString().split('T')[0],
       items: content.items
     }
     return receiptDetails
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error)
   }
 }
 

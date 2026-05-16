@@ -6,13 +6,12 @@ import jwt from 'jsonwebtoken'
  * @param {string} username Username of the user.
  * @returns {object} Details on the user.
  */
-export const createJwtToken = (username, role) => {
+export const createJwtToken = (username, id, role) => {
   const payload = {
     iss: 'Issuer id',
     sub: username,
-    username,
-    role,
-    // iat: Date.now(),
+    id,
+    role
   }
   const options = {
     expiresIn: '1h' //10mins?

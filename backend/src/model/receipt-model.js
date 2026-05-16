@@ -1,5 +1,5 @@
 import { query as dbQuery } from '../config/db.js'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 /** @module receiptModel */
 export const receiptModel = {}
 
@@ -60,13 +60,13 @@ receiptModel.findProductDetailsByProductId = async (productId) => {
 receiptModel.addReceipt = async (valueObject) => {
   const insertReceipt = async (randomId, valueObject) => {
     console.log(randomId, valueObject)
-    await dbQuery('BEGIN');
+    await dbQuery('BEGIN')
 
     try {
       const insertReceiptQuery = `
             INSERT INTO ${receiptModel.receiptTableName} (id,user_id,total,currency, store_name,date)
             VALUES ($1, $2,$3,$4, $5,$6)
-        `;
+        `
       await dbQuery(insertReceiptQuery, [
         randomId,
         valueObject.userId,
@@ -74,7 +74,7 @@ receiptModel.addReceipt = async (valueObject) => {
         valueObject.currency,
         valueObject.storeName,
         valueObject.date
-      ]);
+      ])
 
       /**const items = [
         { name: "banana", price:1.5, quantity: 2 },
@@ -88,14 +88,14 @@ receiptModel.addReceipt = async (valueObject) => {
           `INSERT INTO ${receiptModel.productTableName} ( receipt_id, name, price, quantity)
                  VALUES ($1, $2, $3,$4) RETURNING receipt_id`,
           [randomId, item.name, item.price, item.quantity]
-        );
-        if (result.rowCount !== 1) throw new Error('Receipt insert failed');
+        )
+        if (result.rowCount !== 1) throw new Error('Receipt insert failed')
       }
 
-      await dbQuery('COMMIT');
+      await dbQuery('COMMIT')
     } catch (err) {
-      await dbQuery('ROLLBACK');
-      throw err;
+      await dbQuery('ROLLBACK')
+      throw err
     }
   }
   const randomId = uuidv4()
