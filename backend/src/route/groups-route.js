@@ -1,7 +1,7 @@
 //Groups' routes
 import express from 'express'
 import { controller as groupController } from '../controller/groups-controller.js'
-import { jwtTokenIsValid, jwtTokenRole } from '../middleware/jwt.js'
+import { jwtgetId, jwtTokenIsValid, jwtTokenRole } from '../middleware/jwt.js'
 
 export const router = express.Router()
 
@@ -17,7 +17,7 @@ export const router = express.Router()
 //creator can delete any user
 
 router.get('/', groupController.getGroups)
-router.post('/', jwtTokenIsValid, groupController.createGroup)
+router.post('/', jwtTokenIsValid, jwtgetId, groupController.createGroup)
 // router.get('/members', jwtTokenIsValid, jwtTokenRole('boba'), groupController.getGroups)
 
 // router.get('/user/:id', groupController.getGroupsByUsersId)

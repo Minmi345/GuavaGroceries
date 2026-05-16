@@ -19,8 +19,9 @@ groupModel.findGroupsandMembers = async () => {
 }
 
 groupModel.addGroup = async (name, userId) =>{
-  const query = await dbQuery('INSERT INTO groups (name,owner) VALUES ($1, $2) RETURNING group_uuid')
-  const res = await dbQuery(query, [name, userId])
+  const query = 'INSERT INTO groups (name,owner) VALUES ($1, $2) RETURNING group_uuid'
+  const values = [name, userId]
+  const res = await dbQuery(query, values)
   return res.rows[0]
 }
 

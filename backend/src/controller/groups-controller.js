@@ -26,7 +26,8 @@ controller.getGroups = async (req, res) => {
 
 controller.createGroup = async (req, res) => {
   try {
-    const { name, userId } = req.body
+    const { name } = req.body
+    const userId = res.locals.userId
     const groupUuid = await groupModel.addGroup(name, userId)
     res.status(201).json({
       groupUuid
