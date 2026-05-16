@@ -1,5 +1,5 @@
 import { imageToText, parseText } from '../service/ocr-service.js'
-import 'dotenv/config';
+import 'dotenv/config'
 import express from 'express'
 import multer from 'multer'
 export const router = express.Router()
