@@ -7,14 +7,17 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",    
+    "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "cd frontend && npm run dev",
     "backend": "cd backend && npm run dev",
     "all": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "install-all": "npm install --prefix frontend && npm install --prefix backend"
+    "install-all": "npm install --prefix frontend && npm install --prefix backend",
+    "docs": "jsdoc frontend/src backend/src -r -d docs"
   },
   "dependencies": {
     "concurrently": "^9.2.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jsdoc": "^4.0.5"
+  }
 }

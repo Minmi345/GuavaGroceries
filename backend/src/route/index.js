@@ -1,3 +1,9 @@
+/**
+ * All the base paths
+ * @file route index file
+ * @module route/index
+ */
+
 import express from 'express'
 import { router as helloRoute } from './hello.js'
 import { router as userRoute } from './users-route.js'
@@ -6,7 +12,6 @@ import { router as ocrRoute } from './ocr-route.js'
 import { router as receiptRoute } from './receipt-route.js'
 
 export const router = express.Router()
-
 router.use('/', express.json(), helloRoute)
 router.use('/users', express.json(), userRoute)
 router.use('/jwt', express.json(), jwtRoute)
