@@ -19,10 +19,10 @@ export const authorization = async (req, res) => {
         res.status(401).json({ message: "Name or password is wrong :c" })
       else {
         const token = createJwtToken(name, user.role)
-        res.status(200).json({message:"login succesfull",token})
+        res.status(200).json({ token })
       }
-    } else res.status(400).json({ message: "User not found", user })
-    
+    } else res.status(400).json({ user })
+
   }
   catch (err) {
     // res.status(500).json({ message: "Internal server error" })
