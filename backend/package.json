@@ -10,7 +10,7 @@
     "clean": "rm -rf node_modules/ package-log.json",
     "eslint": "npx eslint .",
     "eslint:fix": "npx eslint . --fix",
-    "docs": "npx jsdoc -c jsdoc.json && node inject-css.mjs",
+    "docs": "npx jsdoc -c jsdoc.json",
     "docs:serve": "serve docs/ -l 4000"
   },
   "keywords": [],
