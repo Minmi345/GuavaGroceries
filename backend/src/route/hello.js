@@ -1,7 +1,7 @@
 //test routes to know that it is working
 import express from 'express'
 import http from 'http'
-import { jwtTokenIsValid, jwtTokenRole } from '../middleware/jwt.js'
+import { jwtgetId, jwtTokenIsValid, jwtTokenRole } from '../middleware/jwt.js'
 
 export const router = express.Router()
 
@@ -24,6 +24,12 @@ router.get('/api/hello', (req, res) => {
 
 router.get('/api/message', jwtTokenIsValid, (req,res) =>{
   res.json({message:"Hello from backend :)"})
+})
+
+router.get('/jwtid', jwtTokenIsValid, jwtgetId, (req,res) =>{
+  const userid = res.locals.userId
+
+  res.json({message:"Hello from backend :)", userid})
 })
 
 router.get('/api/bobamessage', jwtTokenIsValid, jwtTokenRole('boba'), (req,res) =>{

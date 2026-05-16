@@ -10,7 +10,7 @@ import jwt from 'jsonwebtoken'
 export const jwtTokenIsValid = (req, res, next) => {
   const authHeader = req.header('Authorization')
   // Extract token from "Bearer <token>"
-  const token = authHeader && authHeader.split(' ')[1] 
+  const token = authHeader && authHeader.split(' ')[1]
 
   if (!token) {
     return res.status(401).json({ error: 'No token provided.' })
@@ -19,7 +19,7 @@ export const jwtTokenIsValid = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     res.locals.jwt = decoded
-    next() 
+    next()
   } catch (error) {
     console.error(error)
     return res.status(403).json({ error: 'JWT token is not valid.' })
@@ -38,13 +38,28 @@ export const jwtTokenRole = (requiredRole) => {
     const user = res.locals.jwt
 
     if (!user || user.role !== requiredRole) {
-      return res.status(403).json({ 
-        error: `Forbidden: This action requires ${requiredRole} privileges.` 
+      return res.status(403).json({
+        error: `Forbidden: This action requires ${requiredRole} privileges.`
       })
     }
 
     next()
   }
+
+}
+
+export const jwtgetId = (req, res, next) => {
+
+  const user = res.locals.jwt
+
+  if (!user || !user.id) {
+    return res.status(400).json({ error: 'User ID not found in token.' })
+  }
+
+  // Attach the ID to res.locals so the next function can see it
+  res.locals.userId = user.id
+
+  next()
 
 }
 
