@@ -11,7 +11,11 @@ export async function apiFetch(path, options = {}) {
     ...options,
   })
 
-  if (!res.ok) throw new Error(await res.text())
+  if (!res.ok) {
+    const err = new Error(await res.text())
+    err.status = res.status // attach the status code to the error
+    throw err
+  }
+
   return res.json()
 }
-
