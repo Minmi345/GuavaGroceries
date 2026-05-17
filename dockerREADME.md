@@ -5,7 +5,7 @@
 
 # Combined container
 
-To run combined container from inside `/GuavaGroceries`
+Run combined container from inside `/GuavaGroceries`
 
 ## Rebuild docker image
 Do this after you
