@@ -4,6 +4,9 @@
 - docker-desktop needs to be started.
 
 # Combined container
+
+To run combined container from inside `/GuavaGroceries`
+
 ## Rebuild docker image
 Do this after you
 
@@ -15,13 +18,13 @@ _3. update .env file_
 
 This will make sure docker image gets rebuilt with the updated `package.json` and environment variables
    
-- Build and start (backend):
+- Build and start:
 
    ```bash
    docker compose up --build -d
    ```
 
-## Quick Start
+## Start and stop
 
 Run this to start the container:
 
