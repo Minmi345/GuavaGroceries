@@ -61,6 +61,7 @@ controller.addUser = async (req, res) => {
     const salt = bcrypt.genSaltSync(10)
     const hashed_password = bcrypt.hashSync(password, salt)
     const userId = await userModel.addUser(name, hashed_password)
+    if (userId == -1) res.status(409).send({ message: "User already exists" })
     res.status(201).json({
       userId
     })
