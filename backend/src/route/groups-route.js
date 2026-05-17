@@ -17,6 +17,7 @@ export const router = express.Router()
 //creator can delete any user
 
 router.get('/', groupController.getGroups)
+router.get('/:id', groupController.getGroupById) // more of a test
 router.post('/', jwtTokenIsValid, jwtgetId, groupController.createGroup)
 // router.get('/members', jwtTokenIsValid, jwtTokenRole('boba'), groupController.getGroups)
 
