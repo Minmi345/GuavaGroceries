@@ -61,6 +61,7 @@ router.get('/:id', function getUserById(req, res) {
  * @param {ExpressResponse} res - Express response
  * @param {number} res.body.userId - The created user's ID
  * @returns {201} If user created successfully.
+ * @returns {409} If user already exists.
  * @returns {500} If a database or server error occurs.
  */
 router.post('/', function addUser(req, res) {

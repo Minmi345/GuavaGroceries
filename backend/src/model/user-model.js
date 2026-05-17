@@ -34,7 +34,7 @@ userModel.findUserById = async (id) => {
 userModel.findUserByName = async (name) => {
   const query = 'SELECT * FROM users WHERE name=$1'
   console.log(name)
-  const res = await dbQuery(query,[name])
+  const res = await dbQuery(query, [name])
   return res.rows[0]
 }
 
@@ -49,9 +49,10 @@ userModel.findUserByName = async (name) => {
 
 //Include name with a space?
 userModel.addUser = async (name, password) => {
-  const query = 'INSERT INTO users (name, password,role) VALUES ($1, $2, \'user\') RETURNING id'
+  const query = 'INSERT INTO users (name, password,role) VALUES ($1, $2, \'user\') ON CONFLICT (name) DO NOTHING RETURNING id'
   const values = [name, password]
   const res = await dbQuery(query, values)
+  if (res.rowCount <= 0) { return -1 }
   return res.rows[0].id
 }
 
@@ -85,7 +86,7 @@ userModel.updateUser = async (id, updates) => {
 userModel.updateRole = async (id, role) => {
   const query = 'UPDATE users SET "role" = $1 WHERE id = $2 RETURNING (id, role)'
   const values = [role, id]
-  const res = await dbQuery(query,values)
+  const res = await dbQuery(query, values)
   return res.rows[0]
 }
 
@@ -104,7 +105,7 @@ userModel.deleteUser = async (id) => {
 
 userModel.login = async (name, password) => {
   const query = 'SELECT * FROM users WHERE name=$1, password=$2'
-  const values = [name,password]
-  const res = await dbQuery(query,values)
-  return res.rows[0]?true:false //if someone is found with such password and name, returns true 
+  const values = [name, password]
+  const res = await dbQuery(query, values)
+  return res.rows[0] ? true : false //if someone is found with such password and name, returns true 
 }
