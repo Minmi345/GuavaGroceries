@@ -9,6 +9,7 @@ import UploadPage from './pages/UploadPage'
 import StatisticsPage from './pages/StatisticsPage'
 import GroupPage from './pages/GroupPage'
 import AccountPage from './pages/AccountPage'
+import AboutPage from './pages/AboutPage'
 
 function App() {
   const [darkMode, setDarkMode] = useState(false)
@@ -32,6 +33,7 @@ function App() {
         <Route path='/statistics' element={<StatisticsPage />} />
         <Route path='/group' element={<GroupPage />} />
         <Route path='/account' element={<AccountPage />} />
+        <Route path='/about' element={<AboutPage />} />
       </Routes>
     </BrowserRouter>
   )
